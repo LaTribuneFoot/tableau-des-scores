@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau des Scores - Matchs de Football</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgba(17, 17, 18, 0.9);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        h1 {
+            font-size: 18px;
+            color: #00ff66;
+            margin-bottom: 20px;
+        }
+        .match-row {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            width: 280px;
+            padding: 8px;
+            background-color: rgba(51, 51, 51, 0.5);
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+        .team-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+        }
+        .team-name {
+            font-size: 12px;
+            text-align: center;
+        }
+        .vs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 10%;
+        }
+        .time {
+            color: #888;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Scores en Direct</h1>
+
+    <div id="match-container"></div>
+
+    <script>
+        const teamsLogos = {
+            "A.F ST LOUIS": "Af Saint-Louis.jpg",
+            "ST DENIS FC": "Saint Denis Fc.jpg",
+            "ST PAULOISE FC": "St Pauloise.jpg",
+            "ACF PITON ST LEU": "Acf Piton St Leu.jpg",
+            "AS ST LOUISIENNE": "As St Louisienne.jpg",
+            "A.S. JEANNE D'ARC": "As Jeanne Darc.jpg",
+            "TROIS BASSINS FC": "Trois bassins FC.jpg",
+            "AS STE SUZANNE": "As Ste Suzanne.jpg",
+            "RAVINE BLANCHE": "Ravine blanche.jpg",
+            "J.S. GAULOISE": "Js Gauloise.jpg",
+            "SAINTE ROSE F.C.": "Sainte Rose Fc.jpg",
+            "LA TAMPONNAISE": "La Tamponnaise.jpg",
+            "AS EXCELSIOR": "As Excelsior.jpg",
+            "JS ST PIERROISE": "Js St Pierroise.jpg"
+        };
+
+        function loadScores() {
+            const scores = JSON.parse(localStorage.getItem('matchScores')) || {};
+            const matchContainer = document.getElementById("match-container");
+            matchContainer.innerHTML = ''; // Réinitialise le contenu
+
+            for (let i = 1; i <= 7; i++) {
+                const match = scores[`match${i}`];
+                if (!match) continue;
+
+                const matchRow = document.createElement("div");
+                matchRow.className = "match-row";
+                matchRow.innerHTML = `
+                    <a href="https://example.com/salon${i}" class="invisible-link"></a>
+                    <div class="team-row">
+                        <div class="team">
+                            <img src="${teamsLogos[match.homeTeam]}" alt="${match.homeTeam} Logo" />
+                            <span class="team-name">${match.homeTeam}</span>
+                        </div>
+                        <div class="vs">
+                            <span class="time">${match.status}</span>
+                            <div class="score-container">
+                                <div class="score">${match.homeScore}</div>
+                                <div>-</div>
+                                <div class="score">${match.awayScore}</div>
+                            </div>
+                        </div>
+                        <div class="team">
+                            <img src="${teamsLogos[match.awayTeam]}" alt="${match.awayTeam} Logo" />
+                            <span class="team-name">${match.awayTeam}</span>
+                        </div>
+                    </div>
+                `;
+                matchContainer.appendChild(matchRow);
+            }
+        }
+
+        // Charger les scores en direct toutes les secondes
+        setInterval(loadScores, 1000);
+
+        // Charger les scores immédiatement à l'ouverture
+        window.onload = loadScores;
+    </script>
+
+</body>
+</html>

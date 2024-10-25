@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Gestion des Scores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgba(17, 17, 18, 0.9);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        h1 {
+            font-size: 18px;
+            color: #00ff66;
+            margin-bottom: 20px;
+        }
+        .match-row {
+            background-color: rgba(51, 51, 51, 0.5);
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            width: 300px;
+            margin-bottom: 10px;
+        }
+        .team-select {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 5px;
+        }
+        .score-container, .status-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .score-btn {
+            background-color: #00ff66;
+            color: #fff;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .score {
+            font-size: 18px;
+            color: #ff0000;
+        }
+        .status-select {
+            width: 100%;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interface d'Administration - Gestion des Scores</h1>
+
+    <div id="match-container"></div>
+
+    <script>
+        const teams = [
+            "A.F ST LOUIS", "ST DENIS FC", "ST PAULOISE FC", "ACF PITON ST LEU", 
+            "AS ST LOUISIENNE", "A.S. JEANNE D'ARC", "TROIS BASSINS FC", 
+            "AS STE SUZANNE", "RAVINE BLANCHE", "J.S. GAULOISE", 
+            "SAINTE ROSE F.C.", "LA TAMPONNAISE", "AS EXCELSIOR", "JS ST PIERROISE"
+        ];
+
+        function generateMatchRows() {
+            const matchContainer = document.getElementById("match-container");
+            for (let i = 1; i <= 7; i++) {
+                const matchRow = document.createElement("div");
+                matchRow.className = "match-row";
+                matchRow.innerHTML = `
+                    <label>Équipe Domicile</label>
+                    <select id="homeTeam${i}" class="team-select">${generateTeamOptions()}</select>
+                    
+                    <label>Équipe Extérieure</label>
+                    <select id="awayTeam${i}" class="team-select">${generateTeamOptions()}</select>
+                    
+                    <div class="score-container">
+                        <button onclick="updateScore(${i}, 'home', -1)" class="score-btn">-</button>
+                        <span class="score" id="homeScore${i}">0</span>
+                        <button onclick="updateScore(${i}, 'home', 1)" class="score-btn">+</button>
+                        
+                        <span class="score-separator">-</span>
+                        
+                        <button onclick="updateScore(${i}, 'away', -1)" class="score-btn">-</button>
+                        <span class="score" id="awayScore${i}">0</span>
+                        <button onclick="updateScore(${i}, 'away', 1)" class="score-btn">+</button>
+                    </div>
+                    
+                    <label>Statut</label>
+                    <select id="status${i}" class="status-select">
+                        <option value="MT1">MT1</option>
+                        <option value="MT2">MT2</option>
+                        <option value="Fin">Fin</option>
+                    </select>
+                `;
+                matchContainer.appendChild(matchRow);
+            }
+        }
+
+        function generateTeamOptions() {
+            return teams.map(team => `<option value="${team}">${team}</option>`).join("");
+        }
+
+        function updateScore(matchIndex, team, increment) {
+            const scoreElement = document.getElementById(`${team}Score${matchIndex}`);
+            let score = parseInt(scoreElement.textContent);
+            score = Math.max(0, score + increment); // Empêche le score de descendre en dessous de 0
+            scoreElement.textContent = score;
+            saveScores();
+        }
+
+        function saveScores() {
+            const scores = {};
+            for (let i = 1; i <= 7; i++) {
+                scores[`match${i}`] = {
+                    homeTeam: document.getElementById(`homeTeam${i}`).value,
+                    awayTeam: document.getElementById(`awayTeam${i}`).value,
+                    homeScore: document.getElementById(`homeScore${i}`).textContent,
+                    awayScore: document.getElementById(`awayScore${i}`).textContent,
+                    status: document.getElementById(`status${i}`).value
+                };
+            }
+            localStorage.setItem('matchScores', JSON.stringify(scores));
+        }
+
+        function loadScores() {
+            const scores = JSON.parse(localStorage.getItem('matchScores')) || {};
+            for (let i = 1; i <= 7; i++) {
+                if (scores[`match${i}`]) {
+                    document.getElementById(`homeTeam${i}`).value = scores[`match${i}`].homeTeam;
+                    document.getElementById(`awayTeam${i}`).value = scores[`match${i}`].awayTeam;
+                    document.getElementById(`homeScore${i}`).textContent = scores[`match${i}`].homeScore;
+                    document.getElementById(`awayScore${i}`).textContent = scores[`match${i}`].awayScore;
+                    document.getElementById(`status${i}`).value = scores[`match${i}`].status;
+                }
+            }
+        }
+
+        window.onload = () => {
+            generateMatchRows();
+            loadScores();
+        };
+    </script>
+
+</body>
+</html>
