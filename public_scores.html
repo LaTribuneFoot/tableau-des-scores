@@ -1,69 +1,60 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau des Scores - Matchs de Football</title>
     <style>
-        html, body {
+        body {
             font-family: Arial, sans-serif;
-            background-color: rgba(17, 17, 18, 0.9); /* Fond semi-transparent */
-            color: #fff; /* Texte en blanc */
+            background-color: rgba(17, 17, 18, 0.9);
+            color: #fff;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%; /* Assure que le fond couvre toute la hauteur */
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
         }
-
         h1 {
-            font-size: 18px; /* Taille du titre */
-            color: #00ff66; /* Texte en vert clair */
+            font-size: 18px;
+            color: #00ff66;
             margin-bottom: 20px;
         }
-
         .match-row {
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            width: 280px; /* Largeur ajustée */
+            width: 280px;
             padding: 8px;
-            background-color: rgba(51, 51, 51, 0.5); /* Fond transparent pour les cartes */
+            background-color: rgba(51, 51, 51, 0.5);
             border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Ombre autour des cartes */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
             margin-bottom: 10px;
         }
-
         .team-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
         }
-
         .team {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 45%;
         }
-
         .team img {
             width: 20px;  /* Largeur des logos */
             height: 20px; /* Hauteur des logos */
             object-fit: contain; /* Pour s'assurer que les logos gardent leurs proportions */
         }
-
         .team-name {
             font-size: 12px;
             text-align: center;
         }
-
         .vs {
             display: flex;
             flex-direction: column;
@@ -71,20 +62,18 @@
             justify-content: center;
             width: 10%;
         }
-
         .time {
-            color: #888; /* Texte secondaire gris */
+            color: #888;
             font-size: 12px;
             text-align: center;
             margin-bottom: 5px;
         }
-
         .score-container {
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            color: #ff0000; /* Couleur des scores en rouge */
+            color: #ff0000;
             font-weight: bold;
         }
     </style>
@@ -95,7 +84,7 @@
 
     <div id="match-container"></div>
 
-    <script>
+     <script>
         // Le chemin de base pour les logos dans le dépôt GitHub
         const basePath = "https://latribunefoot.github.io/tableau-des-scores/logos/";
         const teamsLogos = {
@@ -121,12 +110,12 @@
             matchContainer.innerHTML = ''; // Réinitialise le contenu
 
             for (let i = 1; i <= 7; i++) {
-                const match = scores[`match${i}`];
+                const match = scores[match${i}];
                 if (!match) continue;
 
                 const matchRow = document.createElement("div");
                 matchRow.className = "match-row";
-                matchRow.innerHTML = `
+                matchRow.innerHTML = 
                     <a href="https://example.com/salon${i}" class="invisible-link"></a>
                     <div class="team-row">
                         <div class="team">
@@ -146,7 +135,7 @@
                             <span class="team-name">${match.awayTeam}</span>
                         </div>
                     </div>
-                `;
+                ;
                 matchContainer.appendChild(matchRow);
             }
         }
